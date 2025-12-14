@@ -1,0 +1,145 @@
+<path>src/components/global/Header.astro</path>
+<content>
+---
+import Button from '@components/ui/Button.astro';
+import Logo from '@components/global/Logo.astro';
+import IconMenu from '@components/icons/IconMenu.astro';
+import IconX from '@components/icons/IconX.astro';
+
+/**
+ * A global, responsive, and sticky header component.
+ * It features the site logo, primary navigation, a call-to-action button,
+ * and a fully functional mobile menu. The background uses a 'glassmorphism'
+ * effect at the top of the page and transitions to a semi-opaque background
+ * on scroll for improved readability.
+ */
+
+// Navigation links are defined here for centralized management.
+// These can be expanded as more pages are added to the site.
+const navLinks = [
+  { href: '/services', text: 'Services' },
+  { href: '/about', text: 'About Us' },
+  { href: '/contact', text: 'Contact' },
+];
+---
+
+<header
+  id="main-header"
+  class="sticky top-0 z-50 w-full border-b border-neutral-200/50 glass-effect transition-all duration-300"
+>
+  <div class="container flex h-20 items-center justify-between">
+    <!-- Logo linking to homepage -->
+    <div class="flex-shrink-0">
+      <a href="/" aria-label="Westgate Enterprises Homepage">
+        <Logo class="h-8 w-auto text-neutral-800" />
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex" aria-label="Main navigation">
+      <ul class="flex items-center gap-x-8">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-base font-semibold text-neutral-700 transition-colors duration-200 hover:text-primary"
+              >
+                {link.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Desktop CTA & Mobile Menu Toggle -->
+    <div class="flex items-center gap-x-4">
+      <div class="hidden lg:block">
+        <Button href="/quote" variant="primary" size="sm">Get a Free Quote</Button>
+      </div>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button
+        id="mobile-menu-toggle"
+        class="relative z-50 -mr-2 inline-flex h-10 w-10 items-center justify-center rounded-md p-2 text-neutral-700 lg:hidden"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Toggle navigation menu"
+      >
+        <span class="sr-only">Open main menu</span>
+        <IconMenu id="icon-open" class="h-6 w-6" />
+        <IconX id="icon-close" class="hidden h-6 w-6" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Panel -->
+  <div id="mobile-menu" class="hidden lg:hidden" aria-live="polite">
+    <!-- This div creates the full-screen menu panel -->
+    <div class="absolute inset-x-0 top-0 z-40 origin-top transform bg-white pt-20 shadow-lg ring-1 ring-black/5 transition">
+      <div class="space-y-2 px-4 pb-6 pt-2">
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="block rounded-md px-3 py-2 text-base font-semibold leading-7 text-neutral-800 hover:bg-neutral-100"
+            >
+              {link.text}
+            </a>
+          ))
+        }
+        <div class="pt-4">
+          <Button href="/quote" variant="primary" class="w-full">Get a Free Quote</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggleButton = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+  const header = document.getElementById('main-header');
+
+  if (toggleButton && mobileMenu && iconOpen && iconClose && header) {
+    toggleButton.addEventListener('click', () => {
+      const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+
+      toggleButton.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+      document.body.classList.toggle('overflow-hidden', !isExpanded);
+
+      // Make header opaque when menu is open for readability
+      if (!isExpanded) {
+        header.classList.remove('glass-effect');
+        header.classList.add('bg-white', 'shadow-md');
+      } else {
+        // Restore glass effect if at top of page when closing
+        if (window.scrollY <= 10) {
+          header.classList.add('glass-effect');
+          header.classList.remove('bg-white', 'shadow-md');
+        }
+      }
+    });
+  }
+
+  // Add a scroll listener to transition header background
+  window.addEventListener('scroll', () => {
+    const isExpanded = toggleButton?.getAttribute('aria-expanded') === 'true';
+    if (isExpanded) return; // Don't change style if mobile menu is open
+
+    if (window.scrollY > 10) {
+      header?.classList.remove('glass-effect');
+      header?.classList.add('bg-white/95', 'shadow-md', 'backdrop-blur-lg');
+    } else {
+      header?.classList.add('glass-effect');
+      header?.classList.remove('bg-white/95', 'shadow-md', 'backdrop-blur-lg');
+    }
+  });
+</script>
+</content>

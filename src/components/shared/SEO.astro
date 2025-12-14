@@ -1,0 +1,91 @@
+---
+/**
+ * A reusable SEO component that manages all essential meta tags for a page.
+ * It handles the page title, description, canonical URL, Open Graph, and
+ * Twitter Card tags, ensuring optimal search engine and social media presence.
+ *
+ * This component relies on `Astro.site` being set in `astro.config.mjs`
+ * to generate absolute URLs for canonical links and social images.
+ *
+ * @example
+ * ---
+ * import SEO from '@components/shared/SEO.astro';
+ * ---
+ * <head>
+ *   <SEO
+ *     title="Our Services"
+ *     description="Explore the expert electrical services offered by Westgate Enterprises."
+ *     ogImage="/images/services-social-card.jpg"
+ *   />
+ *   ...
+ * </head>
+ */
+export interface Props {
+  /** The title of the page. It will be automatically combined with the site name. */
+  title: string;
+  /** The meta description for the page, crucial for SEO and social snippets. */
+  description: string;
+  /** The relative path to the Open Graph image (e.g., `/images/social-share.jpg`). */
+  ogImage?: string;
+  /** The canonical URL for the page. Defaults to the current page's URL. */
+  canonicalURL?: string | URL;
+  /** The Open Graph type. Defaults to 'website'. */
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  ogType = 'website',
+} = Astro.props;
+
+// --- Site-wide SEO configuration from the strategic brief ---
+const siteName = "Westgate Enterprises";
+const siteUrl = Astro.site; // Must be set in astro.config.mjs
+const defaultOgImage = '/images/westgate-social-share.jpg'; // A default social sharing image
+const twitterHandle = undefined; // No Twitter handle provided in the brief
+
+// --- Page-specific SEO data construction ---
+
+// 1. Page Title: Combine page title with site name, unless already present.
+const pageTitle = title.includes(siteName)
+  ? title
+  : `${title} | ${siteName}`;
+
+// 2. Canonical URL: Use the prop if provided, otherwise generate from the current page.
+const finalCanonicalURL = canonicalURL 
+  ? new URL(String(canonicalURL), siteUrl) 
+  : new URL(Astro.url.pathname, siteUrl);
+
+// 3. Social Image URL: Create an absolute URL for the social sharing image.
+const imageSrc = ogImage || defaultOgImage;
+const finalOgImageURL = new URL(imageSrc, siteUrl);
+---
+<!-- Primary Meta Tags -->
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={finalCanonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={finalCanonicalURL} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:image" content={finalOgImageURL.toString()} />
+<meta property="og:image:alt" content={`Social media image for ${siteName}: ${title}`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={finalOgImageURL.toString()} />
+<meta name="twitter:image:alt" content={`Twitter card image for ${siteName}: ${title}`} />
+{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+
+<!-- Other Meta -->
+<meta name="generator" content={Astro.generator} />

@@ -1,0 +1,85 @@
+---
+/**
+ * Blog Post Page
+ *
+ * Dynamic route for individual blog posts.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const { title, description, publishDate, updatedDate, author, image, imageAlt } = post.data;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image?.src}
+  type="article"
+  publishedTime={publishDate}
+  modifiedTime={updatedDate}
+  author={author}
+>
+  <main class="section">
+    <article class="container container-prose">
+      <header class="stack stack-md" style="margin-bottom: var(--spacing-12);">
+        <a href="/blog" class="back-link">
+          ← Back to blog
+        </a>
+        <h1 class="text-4xl font-bold">{title}</h1>
+        <p class="text-text-subtle">
+          <time datetime={publishDate.toISOString()}>
+            {publishDate.toLocaleDateString('en-GB', {
+              year: 'numeric', month: 'long', day: 'numeric'
+            })}
+          </time>
+          {author && <span> · {author}</span>}
+        </p>
+      </header>
+
+      {image && (
+        <figure style="margin-bottom: var(--spacing-12);">
+          <img src={image.src} alt={imageAlt || title} class="post-image" />
+        </figure>
+      )}
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+    text-decoration: none;
+    transition: color var(--duration-150) var(--ease-out);
+  }
+
+  .back-link:hover {
+    color: var(--color-text);
+  }
+
+  .post-image {
+    width: 100%;
+    border-radius: var(--radius-xl);
+  }
+</style>

@@ -1,0 +1,56 @@
+<path>src/components/ui/Icon.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A general-purpose Icon component that dynamically loads and renders an SVG icon
+ * from the `src/components/icons` directory based on a `name` prop.
+ * This allows for clean and consistent icon usage throughout the application.
+ *
+ * @example
+ * <!-- Renders the 'shield-check' icon with specific styling -->
+ * <Icon name="shield-check" class="h-6 w-6 text-primary" />
+ */
+
+export interface Props extends HTMLAttributes<'svg'> {
+  /** The kebab-case name of the icon to render (e.g., 'shield-check'). */
+  name: string;
+  /** Additional CSS classes to apply to the SVG element. */
+  class?: string;
+}
+
+const { name, class: className, ...attrs } = Astro.props;
+
+// Get all individual icon components from the /icons directory.
+// The key is the file path, and the value is a function that returns the component.
+const allIcons = await Astro.glob<{ default: any }>('../icons/*.astro');
+
+// Create a more convenient map from kebab-case names to component loaders.
+// This allows us to use friendly names like "shield-check" instead of file paths.
+const iconMap = new Map<string, any>();
+for (const path in allIcons) {
+  const filename = path.split('/').pop()?.replace('.astro', ''); // e.g., "IconShieldCheck"
+  if (filename) {
+    // Convert the PascalCase filename to a kebab-case key.
+    // e.g., "IconShieldCheck" becomes "shield-check"
+    const kebabName = filename
+      .replace(/^Icon/, '') // Remove the "Icon" prefix
+      .replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2') // Add hyphens for camelCase
+      .toLowerCase();
+    iconMap.set(kebabName, allIcons[path].default);
+  }
+}
+
+const IconComponent = iconMap.get(name);
+
+// In development mode, provide a helpful warning if an icon is not found.
+if (!IconComponent && import.meta.env.DEV) {
+  console.warn(`[Icon Component] Icon named "${name}" not found. Please ensure a corresponding component exists in 'src/components/icons/'. Available icons are: ${Array.from(iconMap.keys()).join(', ')}`);
+}
+---
+
+{IconComponent && (
+  <IconComponent class:list={[className]} {...attrs} />
+)}
+</content>

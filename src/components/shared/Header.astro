@@ -1,0 +1,108 @@
+---
+import Button from '@components/shared/Button.astro';
+
+// In a real project, the logo would be its own component, e.g., import Logo from '@components/shared/Logo.astro';
+
+const navLinks = [
+  { text: 'Services', href: '/services' },
+  { text: 'About', href: '/about' },
+  { text: 'Contact', href: '/contact' },
+];
+
+const phoneNumber = '(623) 266-9706';
+const phoneNumberHref = `tel:${phoneNumber.replace(/\D/g, '')}`;
+const ctaLink = "/quote";
+---
+
+<header id="main-header" class="sticky top-0 z-50 w-full border-b border-neutral-200/50 glass-effect shadow-sm transition-all duration-300">
+  <div class="container">
+    <div class="relative flex h-20 items-center justify-between">
+      <div class="flex flex-1 items-center justify-start">
+        <a href="/" class="flex flex-shrink-0 items-center" aria-label="Westgate Enterprises, Homepage">
+          <!-- Placeholder for Logo.astro component -->
+          <span class="text-xl font-bold text-neutral-800">Westgate Enterprises</span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex lg:items-center lg:justify-center">
+        <ul class="flex space-x-8">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="text-base font-semibold leading-6 text-neutral-700 hover:text-primary transition-colors duration-200">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Desktop CTAs -->
+      <div class="hidden lg:flex flex-1 items-center justify-end gap-x-6">
+        <a href={phoneNumberHref} class="text-base font-semibold text-neutral-700 hover:text-primary transition-colors duration-200">
+          {phoneNumber}
+        </a>
+        <Button href={ctaLink} size="sm">Get a Free Quote</Button>
+      </div>
+      
+      <!-- Mobile Menu Toggle -->
+      <div class="flex items-center lg:hidden">
+        <button
+          type="button"
+          id="mobile-menu-toggle"
+          class="inline-flex items-center justify-center rounded-md p-2 text-neutral-600 hover:bg-neutral-100 hover:text-neutral-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <!-- Hamburger Icon -->
+          <svg id="icon-open" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <!-- Close Icon -->
+          <svg id="icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu, show/hide based on menu state. -->
+  <div class="hidden lg:hidden" id="mobile-menu">
+    <div class="space-y-1 px-4 pt-2 pb-4">
+      {navLinks.map((link) => (
+        <a href={link.href} class="block rounded-md px-3 py-2 text-base font-medium text-neutral-700 hover:bg-neutral-100 hover:text-neutral-800">{link.text}</a>
+      ))}
+    </div>
+    <div class="border-t border-neutral-200 px-4 py-4">
+      <Button href={ctaLink} class="w-full">Get a Free Quote</Button>
+      <a href={phoneNumberHref} class="mt-4 block w-full text-center text-base font-semibold text-neutral-700 hover:text-primary">
+        Call: {phoneNumber}
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggleButton = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const openIcon = document.getElementById('icon-open');
+  const closeIcon = document.getElementById('icon-close');
+
+  if (toggleButton && mobileMenu && openIcon && closeIcon) {
+    toggleButton.addEventListener('click', () => {
+      const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+      
+      toggleButton.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu.classList.toggle('hidden');
+      openIcon.classList.toggle('hidden');
+      openIcon.classList.toggle('block');
+      closeIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('block');
+      
+      // Prevent body scroll when menu is open
+      document.body.classList.toggle('overflow-hidden', !isExpanded);
+    });
+  }
+</script>

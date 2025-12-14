@@ -1,0 +1,85 @@
+<path>src/components/ui/Button.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * Defines the props for a reusable, design-system-aligned button component.
+ * It can render as a link (`<a>`) if `href` is provided, or a `<button>` otherwise.
+ */
+
+type Variant = 'primary' | 'secondary' | 'outline' | 'outline-white' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+export interface Props extends HTMLAttributes<'a'> {
+  /** The URL to link to. If provided, the component renders as an `<a>` tag. */
+  href?: string;
+  /** The visual style of the button. */
+  variant?: Variant;
+  /** The size of the button. */
+  size?: Size;
+  /** Additional CSS classes to apply to the button. */
+  class?: string;
+  /** If true, applies a subtle pulse animation, typically for primary CTAs. */
+  pulse?: boolean;
+}
+
+const { 
+  href, 
+  variant = 'primary', 
+  size = 'md', 
+  class: className,
+  pulse = false,
+  ...attrs 
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+
+// Base styles for all buttons, aligned with the design system
+const baseClasses = [
+  'inline-flex',
+  'items-center',
+  'justify-center',
+  'rounded-md', // design_system.border_radius.md
+  'font-semibold', // design_system.components.button.font_weight
+  'text-center',
+  'transition-all',
+  'duration-200',
+  'ease-in-out',
+  'focus-visible:outline',
+  'focus-visible:outline-2',
+  'focus-visible:outline-offset-2',
+];
+
+// Size-specific styles, mapping to the typography and spacing scale
+const sizeClasses: Record<Size, string> = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base leading-7',
+  lg: 'px-8 py-4 text-lg',
+};
+
+// Variant-specific styles, using design system color tokens
+const variantClasses: Record<Variant, string> = {
+  primary: 'bg-primary text-white shadow-sm hover:bg-primary-dark focus-visible:outline-primary',
+  secondary: 'bg-secondary text-white shadow-sm hover:bg-secondary-dark focus-visible:outline-secondary',
+  outline: 'border border-primary text-primary bg-transparent hover:bg-primary/10 focus-visible:outline-primary',
+  'outline-white': 'border border-white text-white bg-transparent hover:bg-white/10 focus-visible:outline-white',
+  ghost: 'text-primary hover:bg-primary/10 focus-visible:outline-primary shadow-none bg-transparent',
+};
+
+// Add pulse animation class if requested (for primary variant only, as per spec)
+const pulseClass = pulse && variant === 'primary' ? 'pulse-primary' : '';
+
+const finalClasses = [
+  ...baseClasses,
+  sizeClasses[size],
+  variantClasses[variant],
+  pulseClass,
+  className,
+];
+---
+
+<Tag href={href} class:list={finalClasses} {...attrs}>
+  <slot />
+</Tag>
+</content>

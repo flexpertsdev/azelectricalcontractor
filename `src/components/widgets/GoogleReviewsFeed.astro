@@ -1,0 +1,109 @@
+<path>src/components/widgets/GoogleReviewsFeed.astro</path>
+<content>
+---
+import IconStar from '@components/icons/IconStar.astro';
+import IconGoogle from '@components/icons/IconGoogle.astro';
+import IconQuote from '@components/icons/IconQuote.astro';
+import Button from '@components/ui/Button.astro';
+
+/**
+ * A component to display social proof by showcasing a summary of Google reviews
+ * and a curated list of testimonials. It's designed to build trust and credibility
+ * with potential customers.
+ *
+ * This component is self-contained and uses static data to represent real reviews.
+ */
+export interface Props {
+  /** Additional CSS classes for the outer container. */
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Static data representing the company's Google Review profile.
+// In a real-world scenario, this might be fetched from an API.
+const overallRating = {
+  average: 4.9,
+  count: 67,
+};
+
+// A curated list of representative customer reviews.
+const reviews = [
+  {
+    author: 'Mark S.',
+    rating: 5,
+    quote: "Westgate was fantastic. They installed our Tesla wall connector and upgraded our panel. The whole process was smooth, professional, and the pricing was very fair. Highly recommend for any EV charger installations in Phoenix.",
+  },
+  {
+    author: 'Sarah L.',
+    rating: 5,
+    quote: "We hired them for a full smart home setup - lighting, thermostats, the works. Their expertise is top-notch. They listened to our needs and delivered a system that's both powerful and easy to use. Truly the best electricians in Glendale.",
+  },
+  {
+    author: 'David Chen, Business Owner',
+    rating: 5,
+    quote: "As a property manager, I need reliable contractors. Westgate Enterprises is my go-to for all commercial electrical needs. They are responsive, professional, and always get the job done right the first time. Total peace of mind.",
+  },
+];
+---
+
+<div class:list={['rounded-2xl bg-neutral-100 p-8 shadow-lg sm:p-12', className]}>
+  <div class="flex flex-col items-center gap-4 text-center">
+    <IconGoogle class="h-8 w-8" />
+    <h3 class="text-2xl font-bold text-neutral-800 sm:text-3xl">
+      Rated {overallRating.average} out of 5 Stars
+    </h3>
+
+    <div class="flex items-center" aria-label={`Rated ${overallRating.average} out of 5 stars`}>
+      {
+        Array.from({ length: 5 }).map((_, i) => (
+          <IconStar
+            class:list={[
+              'h-6 w-6',
+              i < Math.round(overallRating.average) ? 'text-accent' : 'text-neutral-300',
+            ]}
+          />
+        ))
+      }
+    </div>
+    <p class="text-base text-neutral-600">
+      Based on <span class="font-semibold">{overallRating.count}+</span> real customer reviews.
+    </p>
+  </div>
+
+  <div class="mt-12 grid gap-8 lg:grid-cols-3">
+    {
+      reviews.map((review) => (
+        <blockquote class="flex h-full flex-col justify-between rounded-xl bg-white p-6 shadow-md ring-1 ring-neutral-200/50">
+          <div>
+            <IconQuote class="h-8 w-8 text-primary/20" />
+            <p class="mt-4 text-base text-neutral-600">"{review.quote}"</p>
+          </div>
+          <footer class="mt-6">
+            <div class="font-semibold text-neutral-800">{review.author}</div>
+            <div class="mt-1 flex items-center" aria-label={`Rated ${review.rating} out of 5 stars`}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <IconStar
+                  class:list={['h-5 w-5', i < review.rating ? 'text-accent' : 'text-neutral-300']}
+                />
+              ))}
+            </div>
+          </footer>
+        </blockquote>
+      ))
+    }
+  </div>
+
+  <div class="mt-12 text-center">
+    <Button
+      href="https://www.google.com/search?q=westgate+enterprises+llc+glendale+az+reviews"
+      target="_blank"
+      rel="noopener noreferrer"
+      variant="outline"
+      size="lg"
+    >
+      <IconGoogle class="mr-2 h-5 w-5" />
+      Read All Our Google Reviews
+    </Button>
+  </div>
+</div>

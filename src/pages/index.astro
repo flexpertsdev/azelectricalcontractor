@@ -1,0 +1,152 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+// Section Components
+import HeroVideo from '@components/sections/HeroVideo.astro';
+import TrustBar from '@components/sections/TrustBar.astro';
+import ServicesGrid from '@components/sections/ServicesGrid.astro';
+import FeaturesAlternating from '@components/sections/FeaturesAlternating.astro';
+import Stats from '@components/sections/Stats.astro';
+import Testimonials from '@components/sections/Testimonials.astro';
+import Cta from '@components/sections/Cta.astro';
+
+// Data for the page from the spec
+const pageMeta = {
+  title: "Westgate Enterprises | Arizona's Smart Home & EV Charging Specialists",
+  description: "Expert residential and commercial electrician in Glendale & Phoenix, AZ. We specialize in smart home automation, EV charger installation, panel upgrades, and more. Licensed, reliable, and guaranteed. Get your free quote today."
+};
+
+const trustBarItems = [
+  {
+    icon: "shield-check",
+    title: "Certified Technicians",
+    description: "Licensed, insured, and highly trained professionals."
+  },
+  {
+    icon: "file-dollar",
+    title: "Upfront Pricing",
+    description: "Clear, transparent quotes with no hidden fees."
+  },
+  {
+    icon: "star",
+    title: "Satisfaction Guaranteed",
+    description: "We don't leave until you're 100% satisfied."
+  }
+];
+
+const serviceItems = [
+  {
+    title: "Smart Home & Automation",
+    description: "Integrate lighting, security, and climate control into one seamless system. We are Arizona's smart home integration experts.",
+    image: "/images/services/smart-home.jpg",
+    url: "/services/smart-home-automation"
+  },
+  {
+    title: "EV Charger Installation",
+    description: "Fast, safe, and reliable home and commercial EV charging solutions for all major vehicle brands.",
+    image: "/images/services/ev-charger.jpg",
+    url: "/services/ev-charger-installation"
+  },
+  {
+    title: "Electrical Panel Upgrades",
+    description: "Ensure your home's electrical system can safely handle modern power demands with a crucial panel upgrade.",
+    image: "/images/services/panel-upgrade.jpg",
+    url: "/services/panel-upgrades"
+  },
+  {
+    title: "Commercial Services",
+    description: "Tenant improvements, dedicated circuits, and energy-efficient lighting for offices, retail, and businesses.",
+    image: "/images/services/commercial.jpg",
+    url: "/services/commercial-electrical"
+  }
+];
+
+const whyChooseUsItems = [
+  {
+    icon: "bolt",
+    title: "Certified Expertise, Unmatched Safety",
+    description: "Our licensed electricians are masters of their craft, staying current with the latest technology and safety codes. We treat your property with respect and ensure every job is done right the first time, protecting what matters most to you.",
+    image: "/images/why-us/technician-working.jpg",
+    imageAlt: "A certified Westgate Enterprises electrician carefully working on an electrical panel."
+  },
+  {
+    icon: "chat-bubble",
+    title: "A Clear & Transparent Process",
+    description: "We believe in clear communication. We start with a full consultation to explain your options, provide a detailed and transparent quote, and keep you informed every step of the way. No surprises, just professional service.",
+    image: "/images/why-us/consultation.jpg",
+    imageAlt: "A Westgate Enterprises electrician having a clear consultation with a client."
+  }
+];
+
+const statsItems = [
+  { value: "15+", label: "Years of Experience" },
+  { value: "500+", label: "Satisfied Customers" },
+  { value: "1,200+", label: "Projects Completed" },
+  { value: "5", label: "Star Average Rating" }
+];
+
+const testimonialItems = [
+  {
+    quote: "Westgate Enterprises was incredible. They installed our EV charger and a full smart lighting system. The process was smooth, the technicians were knowledgeable and professional, and the result is fantastic. Highly recommend!",
+    author: "Sarah L.",
+    location: "Glendale, AZ"
+  },
+  {
+    quote: "As a small business owner, electrical downtime is not an option. Westgate handled our entire tenant improvement project flawlessly. They were on time, on budget, and the quality of their work is top-notch. They are our go-to electricians now.",
+    author: "Mark R.",
+    location: "Business Owner, Phoenix, AZ"
+  },
+  {
+    quote: "We needed our ancient electrical panel replaced. The team from Westgate was so reassuring and transparent about the process and pricing. We feel so much safer in our home now. Thank you!",
+    author: "David & Maria P.",
+    location: "Peoria, AZ"
+  }
+];
+---
+<BaseLayout meta={pageMeta}>
+  <!-- Hero Section -->
+  <HeroVideo
+    headline="Powering Arizona's Modern Lifestyles"
+    subheadline="Expert installation of smart home automation, EV chargers, and advanced electrical systems for homes and businesses in Glendale & Phoenix."
+    primaryCta={{ text: "Get a Free Quote", url: "/quote" }}
+    secondaryCta={{ text: "Explore Our Services", url: "/services" }}
+    videoSrc="/videos/hero-background.mp4"
+  />
+
+  <!-- Trust Bar Section -->
+  <TrustBar items={trustBarItems} />
+
+  <!-- Services Section -->
+  <ServicesGrid
+    headline="Electrical Solutions for Modern Living"
+    subheadline="From future-proofing your home to optimizing your business, we provide comprehensive electrical services tailored to your needs."
+    items={serviceItems}
+  />
+
+  <!-- Why Choose Us Section -->
+  <FeaturesAlternating
+    headline="A Modern Approach to Electrical Services"
+    subheadline="We're more than just electricians; we're your dedicated technology partners, committed to safety, quality, and your complete satisfaction."
+    items={whyChooseUsItems}
+  />
+
+  <!-- Social Proof / Stats Section -->
+  <Stats
+    headline="Proven Experience. Trusted Results."
+    items={statsItems}
+  />
+  
+  <!-- Testimonials Section -->
+  <Testimonials
+    headline="What Our Clients Are Saying"
+    items={testimonialItems}
+  />
+
+  <!-- Final CTA Section from Site Plan -->
+  <Cta
+    headline="Ready to Start Your Project?"
+    subheadline="Let's discuss your electrical needs. We provide a full consultation to explain your available options so you can choose the right scope of work for your home or business."
+    cta={{ text: "Request Your Free Consultation", link: "/contact" }}
+  />
+
+</BaseLayout>

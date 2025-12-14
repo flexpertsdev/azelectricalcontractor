@@ -1,0 +1,95 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * Defines the props for a reusable, styled form input or textarea component.
+ * It's designed to be accessible and integrate with the site's design system.
+ */
+export interface Props extends Omit<HTMLAttributes<'input'>, 'class'> {
+  label: string;
+  name: string;
+  type?: 'text' | 'email' | 'tel' | 'password' | 'number';
+  as?: 'input' | 'textarea';
+  id?: string;
+  placeholder?: string;
+  required?: boolean;
+  error?: string | null; // Pass a string to display an error message
+  class?: string;
+}
+
+const {
+  label,
+  name,
+  type = 'text',
+  as = 'input',
+  id,
+  placeholder,
+  required = false,
+  error = null,
+  class: className,
+  ...attrs
+} = Astro.props;
+
+// Use the provided id or fall back to the name for label association
+const inputId = id || name;
+const errorId = error ? `${inputId}-error` : undefined;
+
+// Base styling for the input/textarea, aligned with the design system
+const baseInputClasses = [
+  'block w-full rounded-md border-0 bg-white py-2.5 px-4 text-neutral-700 shadow-sm',
+  'ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400',
+  'focus:ring-2 focus:ring-inset focus:ring-primary',
+  'sm:text-sm sm:leading-6 transition duration-150 ease-in-out',
+];
+
+// Classes to apply when there is a validation error
+const errorInputClasses = [
+  'ring-semantic-error text-semantic-error',
+  'focus:ring-semantic-error',
+];
+
+const finalInputClasses = [...baseInputClasses, error ? errorInputClasses : '', className];
+---
+
+<div class="w-full">
+  <label for={inputId} class="block text-sm font-medium leading-6 text-neutral-700">
+    {label}
+    {required && <span class="text-semantic-error ml-0.5">*</span>}
+  </label>
+  <div class="mt-2">
+    {
+      as === 'textarea' ? (
+        <textarea
+          name={name}
+          id={inputId}
+          class:list={finalInputClasses}
+          placeholder={placeholder}
+          required={required}
+          aria-invalid={!!error}
+          aria-describedby={errorId}
+          rows={4}
+          {...attrs}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          id={inputId}
+          class:list={finalInputClasses}
+          placeholder={placeholder}
+          required={required}
+          aria-invalid={!!error}
+          aria-describedby={errorId}
+          {...attrs}
+        />
+      )
+    }
+  </div>
+  {
+    error && (
+      <p id={errorId} class="mt-2 text-sm text-semantic-error" role="alert">
+        {error}
+      </p>
+    )
+  }
+</div>

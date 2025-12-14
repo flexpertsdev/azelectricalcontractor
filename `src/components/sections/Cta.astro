@@ -1,0 +1,56 @@
+<path>src/components/sections/Cta.astro</path>
+<content>
+---
+import Button from '@components/ui/Button.astro';
+
+/**
+ * Defines the structure for a single call-to-action link.
+ */
+interface CtaLink {
+  text: string;
+  href: string;
+}
+
+/**
+ * Defines the props for the reusable CTA section component.
+ */
+export interface Props {
+  headline: string;
+  subheadline: string;
+  primaryCta: CtaLink;
+  secondaryCta: CtaLink;
+}
+
+const { headline, subheadline, primaryCta, secondaryCta } = Astro.props;
+---
+
+<!--
+  This component serves as a high-visibility call-to-action, typically placed
+  at the end of a page to drive user conversion.
+  - It uses a dark background (bg-neutral-900) for high contrast, creating a
+    visual endpoint for the page content.
+  - The content is centered and uses large, clear typography to focus attention
+    on the primary message.
+  - A pulsing primary button is used to draw the eye and encourage clicks.
+-->
+<section class="bg-neutral-900">
+  <div class="container py-16 sm:py-20 lg:py-24">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        {headline}
+      </h2>
+      <p class="mt-6 text-lg leading-8 text-neutral-300">
+        {subheadline}
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+        <Button href={primaryCta.href} variant="primary" size="lg" pulse={true}>
+          {primaryCta.text}
+        </Button>
+        <Button href={secondaryCta.href} variant="outline-white" size="lg">
+          {secondaryCta.text}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+</content>

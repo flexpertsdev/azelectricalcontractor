@@ -1,0 +1,78 @@
+---
+import Icon from '@components/ui/Icon.astro';
+
+/**
+ * A navigation component that displays the user's location within the site's
+ * hierarchy. It enhances usability by providing a clear path from the homepage
+ * to the current page.
+ *
+ * @example
+ * ---
+ * import Breadcrumbs from '@components/ui/Breadcrumbs.astro';
+ * const breadcrumbItems = [
+ *   { label: 'Services', href: '/services' },
+ *   { label: 'Smart Home Automation' } // Current page, no href
+ * ];
+ * ---
+ * <Breadcrumbs items={breadcrumbItems} />
+ */
+
+export interface BreadcrumbItem {
+  /** The text to display for the breadcrumb link. */
+  label: string;
+  /** The URL for the breadcrumb link. The last item should not have an href. */
+  href?: string;
+}
+
+export interface Props {
+  /** An array of breadcrumb items. The last item represents the current page. */
+  items: BreadcrumbItem[];
+  /** Additional CSS classes for the outer <nav> element. */
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class:list={['text-sm', className]}>
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+    <!-- Static Home Link -->
+    <li>
+      <div>
+        <a
+          href="/"
+          class="text-neutral-500 transition-colors duration-200 hover:text-neutral-700"
+          aria-label="Homepage"
+        >
+          <Icon name="home" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+          <span class="sr-only">Home</span>
+        </a>
+      </div>
+    </li>
+
+    <!-- Dynamically generated page links -->
+    {
+      items.map((item) => (
+        <li class="flex items-center">
+          <Icon
+            name="chevron-right"
+            class="h-5 w-5 flex-shrink-0 text-neutral-400"
+            aria-hidden="true"
+          />
+          {item.href ? (
+            <a
+              href={item.href}
+              class="ml-2 font-medium text-neutral-500 transition-colors duration-200 hover:text-primary"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <span class="ml-2 font-medium text-neutral-700" aria-current="page">
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

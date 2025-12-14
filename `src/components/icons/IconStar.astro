@@ -1,0 +1,42 @@
+<path>src/components/icons/IconStar.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A star icon, typically used to represent ratings, favorites, or guarantees
+ * (e.g., "Satisfaction Guaranteed"). This component renders a solid-style SVG
+ * that can be styled with Tailwind CSS classes.
+ *
+ * It uses `fill="currentColor"` so its color can be controlled by
+ * Tailwind's text color utilities (e.g., `text-accent`, `text-secondary`).
+ *
+ * @example
+ * <!-- Renders a yellow icon with a height and width of 6 units -->
+ * <IconStar class="h-6 w-6 text-accent" />
+ */
+export interface Props extends HTMLAttributes<'svg'> {
+  /** Additional CSS classes to apply to the SVG element. */
+  class?: string;
+}
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  class:list={['h-6 w-6', className]}
+  role="img"
+  aria-hidden="true"
+  focusable="false"
+  {...attrs}
+>
+  <title>Star Icon</title>
+  <path
+    fill-rule="evenodd"
+    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.007z"
+    clip-rule="evenodd"></path>
+</svg>
+</content>

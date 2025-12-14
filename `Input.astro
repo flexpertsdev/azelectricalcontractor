@@ -1,0 +1,79 @@
+<path>src/components/ui/Input.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A reusable, styled, and accessible form input component.
+ * It combines a label and an input field, applying consistent styling
+ * from the design system. It is designed to be a drop-in replacement
+ * for standard HTML inputs within forms.
+ *
+ * @example
+ * <Input
+ *   label="First Name"
+ *   type="text"
+ *   name="first-name"
+ *   placeholder="John"
+ *   required
+ * />
+ */
+
+// We extend from HTMLAttributes<'input'> to allow any standard input attribute
+// (like `placeholder`, `autocomplete`, `value`, etc.) to be passed through
+// to the underlying <input> element.
+export interface Props extends HTMLAttributes<'input'> {
+  /** The visible text label for the input field. */
+  label: string;
+  /** The `name` attribute for the input, used for form submission. */
+  name: string;
+  /** The type of the input field. Defaults to 'text'. */
+  type?: 'text' | 'email' | 'tel' | 'password' | 'number' | 'url';
+  /** An optional ID for the input. If not provided, it's generated from the `name`. */
+  id?: string;
+  /** Whether the input is required. Defaults to false. */
+  required?: boolean;
+  /** Additional CSS classes for the outer wrapper `div`. */
+  class?: string;
+}
+
+const {
+  label,
+  name,
+  type = 'text',
+  id,
+  required = false,
+  class: className,
+  ...attrs // Collects any other passed attributes (e.g., placeholder)
+} = Astro.props;
+
+// Use the provided id or generate one from the name. This is crucial for
+// connecting the <label> to the <input> for accessibility.
+const inputId = id || name;
+
+// Centralized class list for the input element, matching the design system and
+// the styles previously defined in ContactForm.astro's global styles.
+const inputClasses = [
+  'block w-full rounded-md border-0 bg-white px-3.5 py-2 text-neutral-800 shadow-sm',
+  'ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400',
+  'focus:ring-2 focus:ring-inset focus:ring-primary',
+  'sm:text-sm sm:leading-6 transition-shadow duration-200',
+];
+---
+
+<div class:list={[className]}>
+  <label for={inputId} class="block text-sm font-semibold leading-6 text-neutral-800">
+    {label}
+  </label>
+  <div class="mt-2.5">
+    <input
+      type={type}
+      name={name}
+      id={inputId}
+      required={required}
+      class:list={inputClasses}
+      {...attrs}
+    />
+  </div>
+</div>
+</content>

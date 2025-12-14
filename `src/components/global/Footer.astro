@@ -1,0 +1,128 @@
+<path>src/components/global/Footer.astro</path>
+<content>
+---
+import Logo from '@components/global/Logo.astro';
+import Icon from '@components/ui/Icon.astro';
+
+/**
+ * A global footer component for the website.
+ * It includes company branding, a brief mission statement, navigation links,
+ * key service links, contact information, and social media links.
+ * The styling is designed for a dark background, providing a solid
+ * visual anchor at the bottom of each page.
+ */
+
+// Get the current year for the copyright notice.
+const currentYear = new Date().getFullYear();
+
+// Centralized navigation links for the footer.
+const navLinks = [
+  { href: '/', text: 'Home' },
+  { href: '/services', text: 'Services' },
+  { href: '/about', text: 'About Us' },
+  { href: '/contact', text: 'Contact' },
+  { href: '/quote', text: 'Get a Quote' },
+];
+
+// Key services, linking to their respective pages.
+const serviceLinks = [
+  { href: '/services/smart-home-automation', text: 'Smart Home Automation' },
+  { href: '/services/ev-charger-installation', text: 'EV Charger Installation' },
+  { href: '/services/panel-upgrades', text: 'Electrical Panel Upgrades' },
+  { href: '/services/commercial-electrical', text: 'Commercial Services' },
+];
+
+// Social media links. Add or remove as needed.
+const socialLinks = [
+  { href: '#', icon: 'facebook', label: 'Facebook' },
+  { href: '#', icon: 'instagram', label: 'Instagram' },
+  { href: '#', icon: 'linkedin', label: 'LinkedIn' },
+];
+---
+
+<footer class="bg-neutral-900 text-neutral-300" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Footer</h2>
+  <div class="container">
+    <!-- Main Footer Content Grid -->
+    <div class="py-16 sm:py-20 lg:py-24">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <!-- Column 1: Company Info & Socials -->
+        <div class="md:col-span-2 lg:col-span-1">
+          <a href="/" aria-label="Westgate Enterprises Homepage">
+            <Logo class="h-9 w-auto text-white" />
+          </a>
+          <p class="mt-6 text-base leading-7">
+            Your reliable electrical partner for Arizona's modern homes and businesses.
+          </p>
+          <div class="mt-8 flex space-x-6">
+            {socialLinks.map((link) => (
+              <a 
+                href={link.href} 
+                class="text-neutral-400 transition-colors duration-200 hover:text-primary"
+                aria-label={`Follow us on ${link.label}`}
+              >
+                <span class="sr-only">{link.label}</span>
+                <Icon name={link.icon} class="h-6 w-6" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div>
+          <h3 class="font-heading text-sm font-semibold leading-6 text-white">Quick Links</h3>
+          <ul role="list" class="mt-6 space-y-4">
+            {navLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm leading-6 transition-colors duration-200 hover:text-white">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Column 3: Key Services -->
+        <div>
+          <h3 class="font-heading text-sm font-semibold leading-6 text-white">Our Services</h3>
+          <ul role="list" class="mt-6 space-y-4">
+            {serviceLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm leading-6 transition-colors duration-200 hover:text-white">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Column 4: Contact Info -->
+        <div>
+          <h3 class="font-heading text-sm font-semibold leading-6 text-white">Contact Us</h3>
+          <div class="mt-6 space-y-4 text-sm leading-6">
+            <p>
+              PO BOX 2378<br />
+              Glendale, AZ 85311
+            </p>
+            <p>
+              <a href="tel:623-266-9706" class="transition-colors duration-200 hover:text-white">(623) 266-9706</a>
+            </p>
+            <div>
+              <p class="font-semibold text-neutral-200">Hours:</p>
+              <p>Mon - Fri: 9am – 5pm</p>
+              <p>Sat & Sun: Closed</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Copyright & Legal -->
+    <div class="border-t border-neutral-800 py-8">
+      <p class="text-center text-sm leading-5 text-neutral-400">
+        &copy; {currentYear} Westgate Enterprises, LLC. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

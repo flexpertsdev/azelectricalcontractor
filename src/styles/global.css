@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-behavior-smooth;
+  }
+
+  body {
+    @apply bg-neutral-50 font-body text-neutral-500 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold text-neutral-700;
+  }
+}
+
+@layer components {
+  /* Main container for consistent page width */
+  .container {
+    @apply mx-auto w-full max-w-7xl px-6 lg:px-8;
+  }
+
+  /* Standard vertical padding for page sections */
+  .section-padding {
+    @apply py-20 sm:py-24 lg:py-32;
+  }
+
+  /* Base button styles */
+  .btn {
+    @apply inline-block rounded-md px-6 py-3 text-center text-base font-semibold leading-7 shadow-sm transition-all duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+
+  /* Primary action button (Blue) */
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark focus-visible:outline-primary;
+  }
+  
+  /* Secondary action button (Green) */
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-dark focus-visible:outline-secondary;
+  }
+
+  /* Outline button, often used as a secondary action on dark backgrounds */
+  .btn-outline-white {
+    @apply border border-white text-white hover:bg-white/10 focus-visible:outline-white;
+  }
+
+  /* Outline button for light backgrounds */
+  .btn-outline-primary {
+    @apply border border-primary text-primary hover:bg-primary/10 focus-visible:outline-primary;
+  }
+
+  /* Glassmorphism effect for UI elements like navbars or trust bars */
+  .glass-effect {
+    @apply bg-[rgba(248,250,252,0.75)] backdrop-blur-lg;
+  }
+
+  /* Dark mode variant for the glass effect */
+  .dark .glass-effect {
+    @apply bg-[rgba(15,23,42,0.75)]
+  }
+
+  /* A soft, slow pulse animation for primary CTAs */
+  .pulse-primary {
+    @apply shadow-lg;
+    box-shadow: 0 0 0 0 theme('colors.primary.DEFAULT / 70%');
+    animation: pulse-primary 2s infinite;
+  }
+
+  @keyframes pulse-primary {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 theme('colors.primary.DEFAULT / 70%');
+    }
+    70% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px theme('colors.primary.DEFAULT / 0%');
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 theme('colors.primary.DEFAULT / 0%');
+    }
+  }
+}

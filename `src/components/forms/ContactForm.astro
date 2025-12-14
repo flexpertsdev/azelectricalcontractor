@@ -1,0 +1,159 @@
+<path>src/components/forms/ContactForm.astro</path>
+<content>
+---
+import Button from '@components/ui/Button.astro';
+import Icon from '@components/ui/Icon.astro';
+
+/**
+ * A reusable, accessible, and styled contact form component.
+ * It's designed for lead generation, specifically for requesting a free quote.
+ * This component includes fields for personal information, service interest,
+ * and a message. It is pre-configured for deployment on platforms like
+ * Netlify that support static form handling.
+ */
+
+// A centralized list of services for the dropdown menu.
+// This ensures consistency with other parts of the site like the ServicesGrid.
+const services = [
+  'Smart Home & Automation',
+  'EV Charger Installation',
+  'Electrical Panel Upgrades',
+  'Commercial Services',
+  'General Repair & Service',
+  'Other',
+];
+---
+
+<!--
+  The form is set up for Netlify's form handling.
+  - `data-netlify="true"` enables Netlify to detect and process this form.
+  - The hidden input `form-name` is required by Netlify to identify submissions.
+  - The `honeypot` field is a common anti-spam technique.
+-->
+<form
+  name="contact"
+  method="POST"
+  data-netlify="true"
+  data-netlify-honeypot="bot-field"
+  class="mx-auto max-w-xl"
+>
+  <!-- Hidden inputs for Netlify -->
+  <input type="hidden" name="form-name" value="contact" />
+  <p class="hidden">
+    <label>
+      Don’t fill this out if you’re human: <input name="bot-field" />
+    </label>
+  </p>
+
+  <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+    <!-- First Name -->
+    <div>
+      <label for="first-name" class="block text-sm font-semibold leading-6 text-neutral-800">First name</label>
+      <div class="mt-2.5">
+        <input
+          type="text"
+          name="first-name"
+          id="first-name"
+          autocomplete="given-name"
+          required
+          class="form-input"
+        />
+      </div>
+    </div>
+
+    <!-- Last Name -->
+    <div>
+      <label for="last-name" class="block text-sm font-semibold leading-6 text-neutral-800">Last name</label>
+      <div class="mt-2.5">
+        <input
+          type="text"
+          name="last-name"
+          id="last-name"
+          autocomplete="family-name"
+          required
+          class="form-input"
+        />
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="sm:col-span-2">
+      <label for="email" class="block text-sm font-semibold leading-6 text-neutral-800">Email</label>
+      <div class="mt-2.5">
+        <input
+          type="email"
+          name="email"
+          id="email"
+          autocomplete="email"
+          required
+          class="form-input"
+        />
+      </div>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="sm:col-span-2">
+      <label for="phone-number" class="block text-sm font-semibold leading-6 text-neutral-800">Phone number</label>
+      <div class="mt-2.5">
+        <input
+          type="tel"
+          name="phone-number"
+          id="phone-number"
+          autocomplete="tel"
+          class="form-input"
+        />
+      </div>
+    </div>
+    
+    <!-- Service of Interest -->
+    <div class="sm:col-span-2">
+      <label for="service" class="block text-sm font-semibold leading-6 text-neutral-800">Service of Interest</label>
+      <div class="mt-2.5">
+        <select id="service" name="service" class="form-input">
+          <option>Please select a service</option>
+          {services.map(service => <option value={service}>{service}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="sm:col-span-2">
+      <label for="message" class="block text-sm font-semibold leading-6 text-neutral-800">How can we help?</label>
+      <div class="mt-2.5">
+        <textarea
+          name="message"
+          id="message"
+          rows="4"
+          placeholder="Please describe your project or the issue you're experiencing."
+          required
+          class="form-input"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="mt-10">
+    <Button type="submit" variant="primary" size="lg" class="w-full">
+      <span>Get My Free Quote</span>
+      <Icon name="arrow-right" class="ml-2 h-5 w-5" />
+    </Button>
+  </div>
+
+  <!-- Privacy Notice -->
+  <p class="mt-4 text-center text-sm leading-6 text-neutral-500">
+    We respect your privacy. Your information will only be used to contact you about your service request.
+  </p>
+</form>
+
+<style is:global>
+  /* 
+    Define a global style for form inputs to keep them consistent.
+    This uses the `@apply` directive to pull in Tailwind utility classes,
+    creating a reusable component-like class for form elements.
+  */
+  .form-input {
+    @apply block w-full rounded-md border-0 bg-white px-3.5 py-2 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 transition-shadow duration-200;
+  }
+</style>
+</content>

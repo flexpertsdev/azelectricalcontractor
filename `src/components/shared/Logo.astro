@@ -1,0 +1,60 @@
+<path>src/components/global/Logo.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A reusable, text-based SVG logo component for "Westgate Enterprises".
+ * This component is designed to be scalable and stylable directly via
+ * the `class` prop, particularly for color and size.
+ *
+ * It uses `fill="currentColor"` so that its color can be controlled by
+ * Tailwind's text color utilities (e.g., `text-white`, `text-neutral-800`).
+ *
+ * @example
+ * <!-- Renders a white logo with a height of 9 units -->
+ * <Logo class="h-9 w-auto text-white" />
+ */
+export interface Props extends HTMLAttributes<'svg'> {
+  /** Additional CSS classes to apply to the SVG element. */
+  class?: string;
+}
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<svg
+  class:list={[className]}
+  viewBox="0 0 260 28"
+  fill="currentColor"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-hidden="true"
+  focusable="false"
+  {...attrs}
+>
+  <title>Westgate Enterprises Logo</title>
+  <style>
+    /*
+      Using a <style> tag within the SVG ensures these font properties
+      are encapsulated and render correctly, while still allowing the
+      font-family to be inherited from the global stylesheet.
+    */
+    .logo-heavy {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700; /* bold */
+      font-size: 24px;
+      letter-spacing: 0.025em;
+    }
+    .logo-light {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400; /* normal */
+      font-size: 24px;
+      letter-spacing: 0.025em;
+    }
+  </style>
+  <!-- The text is split into two parts for distinct styling -->
+  <text x="0" y="22" class="logo-heavy">WESTGATE</text>
+  <text x="128" y="22" class="logo-light">Enterprises</text>
+</svg>
+</content>

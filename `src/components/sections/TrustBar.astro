@@ -1,0 +1,76 @@
+<path>src/components/sections/TrustBar.astro</path>
+<content>
+---
+import IconShieldCheck from '@components/icons/IconShieldCheck.astro';
+import IconFileDollar from '@components/icons/IconFileDollar.astro';
+import IconStar from '@components/icons/IconStar.astro';
+
+/**
+ * Defines the structure for a single item within the trust bar.
+ */
+export interface TrustItem {
+  /** A key to select the appropriate icon component. */
+  icon: 'shield-check' | 'file-dollar' | 'star';
+  /** The main title of the trust signal. */
+  title: string;
+  /** A brief description elaborating on the trust signal. */
+  description: string;
+}
+
+/**
+ * Defines the props for the TrustBar component.
+ */
+export interface Props {
+  /** An array of TrustItem objects to be displayed. */
+  items: TrustItem[];
+}
+
+const { items } = Astro.props;
+
+// Maps the icon key from props to the actual imported icon component.
+// This allows for dynamic rendering of icons based on the data passed to the component.
+const iconMap = {
+  'shield-check': IconShieldCheck,
+  'file-dollar': IconFileDollar,
+  'star': IconStar,
+};
+---
+
+<!--
+  This section serves as a scannable bar of trust signals, designed to appear
+  immediately after the hero section.
+  - The `relative z-10 -mt-16 sm:-mt-20` classes are crucial for pulling this section up to overlap
+    the bottom of the hero, creating a layered, modern look.
+  - The `glass-effect` class provides the semi-transparent, blurred background.
+  - A responsive grid layout adapts from a vertical stack on mobile to a
+    horizontal bar on larger screens, with subtle dividers for clarity.
+-->
+<section class="relative z-10 -mt-16 sm:-mt-20">
+  <div class="container">
+    <div class="rounded-xl border border-neutral-200/50 shadow-lg glass-effect">
+      <div class="grid grid-cols-1 divide-y divide-neutral-200/50 md:grid-cols-3 md:divide-x md:divide-y-0">
+        {
+          items.map((item) => {
+            const IconComponent = iconMap[item.icon];
+            return (
+              <div class="flex items-center gap-4 p-6 lg:p-8">
+                <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                  <IconComponent class="h-7 w-7 text-primary" />
+                </div>
+                <div>
+                  <h3 class="text-base font-semibold leading-6 text-neutral-800">
+                    {item.title}
+                  </h3>
+                  <p class="mt-1 text-sm text-neutral-600">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</section>
+</content>

@@ -1,0 +1,70 @@
+<path>src/layouts/MinimalLayout.astro</path>
+<content>
+---
+import '@styles/global.css';
+
+/**
+ * A minimal layout for focused pages like quote forms or thank-you pages,
+ * where the standard site header and footer would be a distraction.
+ * It includes all necessary SEO and <head> elements for consistency.
+ */
+
+interface MetaProps {
+  title: string;
+  description?: string;
+}
+
+interface Props {
+  meta: MetaProps;
+}
+
+const { meta } = Astro.props;
+
+// Default values for SEO, consistent with BaseLayout
+const defaultDescription = "Westgate Enterprises is the reliable electrical partner for Arizona's modern homes and businesses. Specializing in smart home, EV charging, and panel upgrades in Glendale & Phoenix.";
+const siteName = "Westgate Enterprises, LLC";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description || defaultDescription} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Fonts (from design system) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description || defaultDescription} />
+    <meta property="og:image" content={new URL('/images/og-image.jpg', Astro.site)} />
+    <meta property="og:site_name" content={siteName} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={meta.title} />
+    <meta property="twitter:description" content={meta.description || defaultDescription} />
+    <meta property="twitter:image" content={new URL('/images/og-image.jpg', Astro.site)} />
+  </head>
+  <body class="bg-neutral-50 font-body text-neutral-500 antialiased flex flex-col min-h-screen">
+    <main class="flex-grow">
+      <slot />
+    </main>
+  </body>
+</html>
+</content>

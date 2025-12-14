@@ -1,0 +1,78 @@
+<path>src/components/ui/Textarea.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A reusable, styled, and accessible form textarea component.
+ * It combines a label and a textarea field, applying consistent styling
+ * from the design system. It is designed to be a drop-in replacement
+ * for standard HTML textareas within forms.
+ *
+ * @example
+ * <Textarea
+ *   label="Your Message"
+ *   name="message"
+ *   placeholder="Please describe your project..."
+ *   required
+ *   rows={5}
+ * />
+ */
+
+// We extend from HTMLAttributes<'textarea'> to allow any standard textarea attribute
+// (like `placeholder`, `rows`, etc.) to be passed through to the underlying element.
+export interface Props extends HTMLAttributes<'textarea'> {
+  /** The visible text label for the textarea field. */
+  label: string;
+  /** The `name` attribute for the textarea, used for form submission. */
+  name: string;
+  /** An optional ID for the textarea. If not provided, it's generated from the `name`. */
+  id?: string;
+  /** Whether the textarea is required. Defaults to false. */
+  required?: boolean;
+  /** The number of visible text lines for the control. Defaults to 4. */
+  rows?: number;
+  /** Additional CSS classes for the outer wrapper `div`. */
+  class?: string;
+}
+
+const {
+  label,
+  name,
+  id,
+  required = false,
+  rows = 4,
+  class: className,
+  ...attrs // Collects any other passed attributes (e.g., placeholder)
+} = Astro.props;
+
+// Use the provided id or generate one from the name. This is crucial for
+// connecting the <label> to the <textarea> for accessibility.
+const textareaId = id || name;
+
+// Centralized class list for the textarea element, matching the design system
+// and the styles previously defined in ContactForm.astro's global styles.
+const textareaClasses = [
+  'block w-full rounded-md border-0 bg-white px-3.5 py-2 text-neutral-800 shadow-sm',
+  'ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400',
+  'focus:ring-2 focus:ring-inset focus:ring-primary',
+  'sm:text-sm sm:leading-6 transition-shadow duration-200',
+];
+---
+
+<div class:list={[className]}>
+  <label for={textareaId} class="block text-sm font-semibold leading-6 text-neutral-800">
+    {label}
+  </label>
+  <div class="mt-2.5">
+    <textarea
+      name={name}
+      id={textareaId}
+      rows={rows}
+      required={required}
+      class:list={textareaClasses}
+      {...attrs}
+    ></textarea>
+  </div>
+</div>
+</content>

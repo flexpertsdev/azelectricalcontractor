@@ -1,0 +1,84 @@
+<path>src/components/sections/HeroVideo.astro</path>
+<content>
+---
+import Button from '@components/ui/Button.astro';
+
+/**
+ * Defines the props for the HeroVideo component.
+ * This component is designed to be the main hero section for the homepage,
+ * featuring a full-bleed video background with text and CTAs overlaid.
+ */
+export interface Props {
+  /** The main, large-font headline. */
+  headline: string;
+  /** The supporting text below the headline. */
+  subheadline: string;
+  /** The text for the primary call-to-action button. */
+  primaryCtaText: string;
+  /** The URL for the primary call-to-action button. */
+  primaryCtaHref: string;
+  /** The text for the secondary call-to-action button. */
+  secondaryCtaText: string;
+  /** The URL for the secondary call-to-action button. */
+  secondaryCtaHref: string;
+  /** The source path for the background video file (e.g., /videos/hero-loop.mp4). */
+  videoSrc: string;
+}
+
+const {
+  headline,
+  subheadline,
+  primaryCtaText,
+  primaryCtaHref,
+  secondaryCtaText,
+  secondaryCtaHref,
+  videoSrc,
+} = Astro.props;
+---
+
+<!-- 
+  This section creates a visually impactful hero with a video background.
+  - It's set to a significant portion of the viewport height (85vh) but has a minimum height to avoid collapsing.
+  - The video is positioned absolutely behind all content and set to autoplay, loop, and be muted for a seamless background effect.
+  - Two overlay divs are used: one for a general dark tint to improve text contrast, and a second for a radial gradient to create the subtle vignette effect specified in the design brief.
+  - The content is centered vertically and horizontally, with typography and button styles pulled from the design system.
+-->
+<section class="relative flex h-[85vh] min-h-[600px] w-full items-center justify-center overflow-hidden text-center text-white">
+  <!-- Background Video Element -->
+  <video
+    autoplay
+    loop
+    muted
+    playsinline
+    class="absolute inset-0 z-[-1] h-full w-full object-cover"
+    aria-hidden="true"
+  >
+    <source src={videoSrc} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Dark Overlay & Vignette for Text Readability -->
+  <div class="absolute inset-0 bg-neutral-900/40"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_60%,_rgba(15,23,42,0.7))]"></div>
+
+  <!-- Centered Content -->
+  <div class="container relative z-10">
+    <div class="mx-auto max-w-4xl">
+      <h1 class="font-heading text-4xl font-bold tracking-tight text-shadow sm:text-5xl lg:text-6xl">
+        {headline}
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-neutral-200 text-shadow sm:text-xl">
+        {subheadline}
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+        <Button href={primaryCtaHref} size="lg" pulse={true}>
+          {primaryCtaText}
+        </Button>
+        <Button href={secondaryCtaHref} variant="outline-white" size="lg">
+          {secondaryCtaText}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+</content>

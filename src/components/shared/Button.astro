@@ -1,0 +1,75 @@
+<path>src/components/shared/Button.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'primary' | 'secondary' | 'outline' | 'outline-white' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+export interface Props extends HTMLAttributes<'a'> {
+  href?: string;
+  variant?: Variant;
+  size?: Size;
+  class?: string;
+  pulse?: boolean;
+}
+
+const { 
+  href, 
+  variant = 'primary', 
+  size = 'md', 
+  class: className,
+  pulse = false,
+  ...attrs 
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+
+// Base styles for all buttons, aligned with the design system
+const baseClasses = [
+  'inline-flex',
+  'items-center',
+  'justify-center',
+  'rounded-md', // default_radius: "md"
+  'font-semibold', // font_weight: "semibold"
+  'text-center',
+  'transition-all',
+  'duration-200',
+  'ease-in-out',
+  'focus-visible:outline',
+  'focus-visible:outline-2',
+  'focus-visible:outline-offset-2',
+];
+
+// Size-specific styles
+const sizeClasses: Record<Size, string> = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base leading-7', // matches global.css .btn
+  lg: 'px-8 py-4 text-lg',
+};
+
+// Variant-specific styles
+const variantClasses: Record<Variant, string> = {
+  primary: 'bg-primary text-white shadow-sm hover:bg-primary-dark focus-visible:outline-primary',
+  secondary: 'bg-secondary text-white shadow-sm hover:bg-secondary-dark focus-visible:outline-secondary',
+  outline: 'border border-primary text-primary hover:bg-primary/10 focus-visible:outline-primary',
+  'outline-white': 'border border-white text-white hover:bg-white/10 focus-visible:outline-white',
+  ghost: 'text-primary hover:bg-primary/10 focus-visible:outline-primary shadow-none',
+};
+
+// Add pulse animation if requested for the primary variant
+const pulseClass = pulse && variant === 'primary' ? 'pulse-primary' : '';
+
+const finalClasses = [
+  ...baseClasses,
+  sizeClasses[size],
+  variantClasses[variant],
+  pulseClass,
+  className,
+];
+---
+
+<Tag href={href} class:list={finalClasses} {...attrs}>
+  <slot />
+</Tag>
+</content>

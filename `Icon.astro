@@ -1,0 +1,16 @@
+<path>src/components/ui/Icon.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A dynamic SVG icon component that renders icons from the `src/assets/icons` directory.
+ *
+ * This component dynamically imports the raw SVG content based on the `name` prop,
+ * extracts the inner paths, and wraps them in a new SVG element. This approach
+ * allows for applying Tailwind CSS classes and other HTML attributes directly to the
+ * icon for easy styling and accessibility.
+ *
+ * ## Usage:
+ *
+ *

@@ -1,0 +1,61 @@
+<path>src/components/sections/Stats.astro</path>
+<content>
+---
+/**
+ * Defines the structure for a single statistic item.
+ */
+export interface StatItem {
+  /** The numerical value or text for the stat (e.g., "15+", "100%"). */
+  value: string;
+  /** The descriptive label for the stat (e.g., "Years of Experience"). */
+  label: string;
+}
+
+/**
+ * Defines the props for the Stats section component.
+ */
+export interface Props {
+  /** The main headline for the section. */
+  headline: string;
+  /** The supporting subheadline. */
+  subheadline: string;
+  /** An array of StatItem objects to display. */
+  stats: StatItem[];
+}
+
+const { headline, subheadline, stats = [] } = Astro.props;
+---
+
+<!--
+  This section provides social proof and builds authority by showcasing key metrics.
+  - It uses a dark background (bg-neutral-900) to create visual contrast with adjacent light sections,
+    following the alternating theme established in the site plan.
+  - The stat values use the 'display' font size from the design system for high impact.
+  - The primary color is used for the stat values to draw attention and reinforce the brand.
+-->
+<section class="bg-neutral-900 py-16 sm:py-20 lg:py-24">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        {headline}
+      </h2>
+      <p class="mt-6 text-lg leading-8 text-neutral-300">
+        {subheadline}
+      </p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-4">
+      {stats.map((stat) => (
+        <div class="flex flex-col items-center justify-center rounded-lg bg-neutral-800/50 p-8 text-center">
+          <p class="font-heading text-display font-bold tracking-tight text-primary">
+            {stat.value}
+          </p>
+          <p class="mt-2 text-lg leading-6 text-neutral-300">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+</content>

@@ -1,0 +1,32 @@
+<path>src/components/shared/Textarea.astro</path>
+<content>
+---
+import Input from '@components/shared/Input.astro';
+import type { Props as InputProps } from '@components/shared/Input.astro';
+
+/**
+ * Defines the props for a dedicated, reusable textarea component.
+ * This component is a wrapper around the more generic `Input` component,
+ * pre-configuring it to act as a textarea for semantic clarity and ease of use.
+ * It inherits all relevant props like `label`, `name`, `placeholder`, and `error`.
+ */
+export interface Props extends Omit<InputProps, 'as' | 'type'> {
+  /**
+   * Specifies the visible height of a text area, in lines.
+   * @default 4
+   */
+  rows?: number;
+}
+
+// Destructure props, providing a default for `rows` and collecting the rest to pass down.
+const { rows = 4, ...rest } = Astro.props;
+---
+
+<!--
+  Render the base Input component, forcing the `as` prop to "textarea"
+  and passing through all other props (`label`, `name`, `error`, etc.).
+  This ensures consistent styling, accessibility, and error handling
+  with all other form fields on the site.
+-->
+<Input as="textarea" rows={rows} {...rest} />
+</content>

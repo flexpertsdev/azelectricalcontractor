@@ -1,0 +1,89 @@
+<path>src/styles/global.css</path>
+<content>
+/* Import Tailwind's base, components, and utilities styles. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * ==========================================================================
+ * Base Layer: Element styles and typographic defaults.
+ * ==========================================================================
+ * These styles are applied to raw HTML elements and establish the site's
+ * foundational look and feel, based on the design system.
+ */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    /* Sets the default background, font, text color, and enables font smoothing. */
+    @apply bg-neutral-50 font-body text-neutral-500 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    /* Sets the default font and color for all heading elements. */
+    @apply font-heading font-bold text-neutral-800;
+  }
+}
+
+/*
+ * ==========================================================================
+ * Components Layer: Reusable, multi-utility classes.
+ * ==========================================================================
+ * This layer contains custom classes that abstract common utility patterns
+ * into a single, reusable component class.
+ */
+@layer components {
+  /*
+   * Container: Centralizes page content with consistent padding.
+   * This is the primary wrapper for all page and section content.
+   */
+  .container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /*
+   * Glass Effect: Creates a blurred, semi-transparent background.
+   * Used for the sticky header to create a modern "glassmorphism" look.
+   * Sourced from design_system.ui.glass_background.
+   */
+  .glass-effect {
+    @apply bg-ui-glass_background backdrop-blur-lg;
+  }
+
+  /*
+   * Pulse Animation: A subtle glow effect for primary CTAs to draw attention.
+   * This class is conditionally applied by the Button.astro component.
+   * The animation uses the primary color from the design system.
+   */
+  .pulse-primary {
+    animation: pulse-primary-animation 2s infinite;
+  }
+
+  @keyframes pulse-primary-animation {
+    0%, 100% {
+      /* Start and end with no shadow */
+      box-shadow: 0 0 0 0 theme('colors.primary.light / 50%');
+    }
+    50% {
+      /* Expand the shadow to create the pulse effect */
+      box-shadow: 0 0 0 10px theme('colors.primary.light / 0%');
+    }
+  }
+
+  /*
+   * Text Shadow: Improves text readability over busy backgrounds like images or videos.
+   * As specified in the homepage hero spec for better contrast.
+   */
+  .text-shadow {
+    text-shadow: 0 2px 4px theme('colors.black / 40%');
+  }
+}
+</content>

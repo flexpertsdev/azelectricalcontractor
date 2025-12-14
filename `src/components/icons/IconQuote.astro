@@ -1,0 +1,39 @@
+<path>src/components/icons/IconQuote.astro</path>
+<content>
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A quotation mark icon, typically used for testimonials, blockquotes, or
+ * pull quotes. This component renders a solid-style SVG that can be styled
+ * with Tailwind CSS classes.
+ *
+ * It uses `fill="currentColor"` so its color can be controlled by
+ * Tailwind's text color utilities (e.g., `text-primary`, `text-neutral-500`).
+ *
+ * @example
+ * <!-- Renders a blue icon with a height and width of 6 units -->
+ * <IconQuote class="h-6 w-6 text-primary" />
+ */
+export interface Props extends HTMLAttributes<'svg'> {
+  /** Additional CSS classes to apply to the SVG element. */
+  class?: string;
+}
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  class:list={['h-6 w-6', className]}
+  role="img"
+  aria-hidden="true"
+  focusable="false"
+  {...attrs}
+>
+  <title>Quote Icon</title>
+  <path d="M6 17h3l2-4V7H5v6h3l-2 4zm8 0h3l2-4V7h-6v6h3l-2 4z"></path>
+</svg>
+</content>

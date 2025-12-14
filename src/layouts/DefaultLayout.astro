@@ -1,0 +1,65 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/shared/Breadcrumbs.astro';
+import type { Crumb } from '@components/shared/Breadcrumbs.astro';
+
+export interface Props {
+  /** The main H1 of the page, also used to construct the SEO title. */
+  title: string;
+  /** The subheadline under the H1, also used for the meta description. */
+  description: string;
+  /** An array of breadcrumb links. */
+  crumbs: Crumb[];
+}
+
+const { title, description, crumbs } = Astro.props;
+
+// Construct the full SEO title and description for the <head> tag.
+// This is passed up to the root BaseLayout.
+const pageMeta = {
+  title: `${title} | Westgate Enterprises, LLC`,
+  description: description,
+};
+---
+
+<BaseLayout meta={pageMeta}>
+  <!-- 
+    Standard Page Header.
+    Features a dark background (bg-neutral-900) to frame the content, 
+    creating a consistent visual rhythm with the site's footer.
+    Includes breadcrumbs for navigation and a clear H1 for the page topic.
+  -->
+  <header class="bg-neutral-900">
+    <div class="container py-16 sm:py-20 lg:py-24">
+      <div class="max-w-4xl">
+        {crumbs && crumbs.length > 0 && (
+          <Breadcrumbs 
+            crumbs={crumbs} 
+            class="
+              [&_a]:text-neutral-400 [&_a:hover]:text-white 
+              [&_span]:text-white 
+              [&_svg]:text-neutral-500
+            "
+          />
+        )}
+        <h1 class="mt-4 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          {title}
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-neutral-300">
+          {description}
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- 
+    Main page content is slotted here.
+    The light background color (bg-neutral-50) is inherited from the <body> tag in BaseLayout.astro.
+    Consistent padding is applied to maintain vertical rhythm.
+  -->
+  <div class="py-16 sm:py-20 lg:py-24">
+    <div class="container">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

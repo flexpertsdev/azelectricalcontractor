@@ -1,0 +1,70 @@
+---
+/**
+ * Defines the structure for a single breadcrumb link.
+ */
+export interface Crumb {
+  label: string;
+  href?: string; // Should be omitted for the current page
+}
+
+/**
+ * Defines the props for the Breadcrumbs component.
+ */
+export interface Props {
+  /**
+   * An array of Crumb objects representing the navigation path.
+   * Example: [{ label: 'Home', href: '/' }, { label: 'Services' }]
+   */
+  crumbs: Crumb[];
+  /**
+   * Optional classes to apply to the root nav element for custom styling.
+   */
+  class?: string;
+}
+
+const { crumbs = [], class: className } = Astro.props;
+---
+
+<!-- 
+  Render the navigation only if there are crumbs to display.
+  This component provides a clear navigation path for users, enhancing UX and SEO.
+  It is semantically structured using <nav> and <ol> elements.
+-->
+{crumbs.length > 0 && (
+  <nav aria-label="Breadcrumb" class:list={["text-sm", className]}>
+    <ol role="list" class="flex items-center">
+      {crumbs.map((crumb, index) => (
+        <li class="flex items-center">
+          {/* Render the link or the current page text */}
+          {crumb.href ? (
+            <a 
+              href={crumb.href} 
+              class="font-medium text-neutral-500 transition-colors hover:text-primary"
+            >
+              {crumb.label}
+            </a>
+          ) : (
+            <span 
+              class="font-semibold text-neutral-700" 
+              aria-current="page"
+            >
+              {crumb.label}
+            </span>
+          )}
+
+          {/* Render a separator for all but the very last item in the list */}
+          {index < crumbs.length - 1 && (
+            <svg 
+              class="mx-2 h-5 w-5 flex-shrink-0 text-neutral-400" 
+              viewBox="0 0 20 20" 
+              fill="currentColor" 
+              aria-hidden="true"
+            >
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+            </svg>
+          )}
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

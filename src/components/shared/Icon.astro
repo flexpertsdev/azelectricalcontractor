@@ -1,0 +1,75 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A type-safe list of all available icon names.
+ * These correspond to keys in the ICONS map below.
+ * The icons are sourced from Heroicons (outline style).
+ */
+export type IconName =
+  | 'shield-check'
+  | 'banknotes'
+  | 'star'
+  | 'bolt'
+  | 'chat-bubble'
+  | 'trophy'
+  | 'map-pin'
+  | 'home'
+  | 'building-office'
+  | 'cpu-chip'
+  | 'award' // Mapped to trophy
+  | 'building' // Mapped to building-office
+  | 'cpu' // Mapped to cpu-chip
+  | 'file-dollar'; // Mapped to banknotes
+
+interface Props extends HTMLAttributes<'svg'> {
+  name: IconName;
+  class?: string;
+}
+
+const { name, class: className, ...attrs } = Astro.props;
+
+/**
+ * A map of icon names to their respective SVG path data.
+ * Using a map allows for easy addition of new icons and provides a single
+ * source of truth for all vector data.
+ */
+const ICONS: Record<IconName, string> = {
+  'shield-check': `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" />`,
+  'banknotes': `<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18v-.008zm-12 0h.008v.008H6v-.008z" />`,
+  'star': `<path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.418a.562.562 0 01.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.022a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.022a.563.563 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988h5.418a.563.563 0 00.475-.31L11.48 3.5z" />`,
+  'bolt': `<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />`,
+  'chat-bubble': `<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.76 9.76 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />`,
+  'trophy': `<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9a9.75 9.75 0 001.056 4.636 1.875 1.875 0 01-3.428.992l-.007-.007a11.25 11.25 0 010-21.642l.007-.007a1.875 1.875 0 013.428.992A9.75 9.75 0 007.5 18.75z" />`,
+  'map-pin': `<path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />`,
+  'home': `<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />`,
+  'building-office': `<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18M18.75 3v18M9 6.75h6.75M9 11.25h6.75M9 15.75h6.75M9 20.25h6.75" />`,
+  'cpu-chip': `<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 4.5v-1.5m0 18v-1.5m3.75-15H21m-18 0h1.5m15 15H21m-18 0h1.5M12 8.25v7.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 15h6v6H9v-6z" />`,
+};
+
+// Aliases for convenience, mapping spec names to icon names
+ICONS['award'] = ICONS['trophy'];
+ICONS['building'] = ICONS['building-office'];
+ICONS['cpu'] = ICONS['cpu-chip'];
+ICONS['file-dollar'] = ICONS['banknotes'];
+
+const iconPath = ICONS[name];
+---
+
+{
+  iconPath && (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      class:list={['w-6 h-6', className]}
+      aria-hidden="true"
+      role="img"
+      {...attrs}
+    >
+      <Fragment set:html={iconPath} />
+    </svg>
+  )
+}

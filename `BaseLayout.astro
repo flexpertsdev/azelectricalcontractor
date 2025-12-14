@@ -1,0 +1,81 @@
+<path>src/layouts/BaseLayout.astro</path>
+<content>
+---
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+
+/**
+ * A foundational layout component for all pages on the site.
+ * It provides the core HTML structure, including the <head>, header,
+ * main content slot, and footer. It also handles global styles,
+ * SEO metadata, and font imports.
+ */
+
+export interface Props {
+  /** The title of the page, used in the <title> tag. */
+  title: string;
+  /** The meta description for the page, crucial for SEO. */
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <!-- TODO: Add a specific OG image for social sharing -->
+    <!-- <meta property="og:image" content="/images/social-share.jpg" /> -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <!-- TODO: Add a specific Twitter image for social sharing -->
+    <!-- <meta property="twitter:image" content="/images/social-share.jpg" /> -->
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-white font-body text-neutral-700 antialiased">
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  /*
+    Define global utility classes here.
+    The .container class is used by most sections to constrain content width.
+    The .glass-effect is used by the sticky header.
+  */
+  .container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .glass-effect {
+    @apply bg-neutral-50/75 backdrop-blur-lg;
+  }
+</style>
+</content>

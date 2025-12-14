@@ -1,0 +1,68 @@
+---
+/**
+ * Blog Index Page
+ *
+ * Lists all published blog posts.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+})).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<BaseLayout title="Blog" description="Latest posts">
+  <main class="section">
+    <div class="container">
+      <header class="stack stack-md" style="margin-bottom: var(--spacing-12);">
+        <h1 class="text-4xl font-bold">Blog</h1>
+        <p class="text-xl text-text-subtle">Latest posts</p>
+      </header>
+
+      {posts.length === 0 ? (
+        <p class="text-text-muted">No posts yet.</p>
+      ) : (
+        <ul class="stack stack-lg" role="list">
+          {posts.map((post) => (
+            <li>
+              <a
+                href={`/blog/${post.slug}`}
+                class="post-link"
+              >
+                <article class="stack stack-sm">
+                  <h2 class="text-2xl font-semibold">{post.data.title}</h2>
+                  <p class="text-text-subtle">{post.data.description}</p>
+                  <p class="text-sm text-text-muted">
+                    <time datetime={post.data.publishDate.toISOString()}>
+                      {post.data.publishDate.toLocaleDateString('en-GB', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                      })}
+                    </time>
+                    {post.data.author && <span> · {post.data.author}</span>}
+                  </p>
+                </article>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .post-link {
+    display: block;
+    padding: var(--spacing-6);
+    margin: calc(var(--spacing-6) * -1);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--duration-150) var(--ease-out);
+  }
+
+  .post-link:hover {
+    background: var(--color-surface-hover);
+  }
+</style>

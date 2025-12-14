@@ -1,0 +1,94 @@
+<path>src/components/sections/FeaturesAlternating.astro</path>
+<content>
+---
+import Button from '@components/ui/Button.astro';
+
+/**
+ * Defines the structure for a single feature item in the alternating layout.
+ */
+export interface FeatureItem {
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  cta?: {
+    text: string;
+    href: string;
+  };
+}
+
+/**
+ * Defines the props for the FeaturesAlternating component.
+ */
+export interface Props {
+  headline: string;
+  subheadline?: string;
+  features: FeatureItem[];
+}
+
+const { headline, subheadline, features = [] } = Astro.props;
+---
+
+<!--
+  This component is designed to showcase key features or value propositions
+  in an engaging, alternating layout of text and imagery.
+  - It's set on a light background (`bg-neutral-50`) to contrast with darker sections.
+  - The layout uses a responsive grid that stacks on mobile and alternates on desktop.
+  - The alternating effect is achieved by conditionally applying `lg:order-last`
+    to the image container based on its index in the array.
+-->
+<section class="bg-neutral-50 py-16 sm:py-20 lg:py-24">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="font-heading text-3xl font-bold tracking-tight text-neutral-800 sm:text-4xl">
+        {headline}
+      </h2>
+      {subheadline && (
+        <p class="mt-6 text-lg leading-8 text-neutral-600">
+          {subheadline}
+        </p>
+      )}
+    </div>
+
+    <!-- Alternating Features Container -->
+    <div class="mt-16 space-y-16 sm:mt-20 sm:space-y-24 lg:mt-24">
+      {features.map((feature, index) => {
+        const isOdd = index % 2 !== 0;
+        return (
+          <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <!-- Image Column: Order changes on large screens for odd items -->
+            <div class:list={[{ 'lg:order-last': isOdd }]}>
+              <img
+                src={feature.image}
+                alt={feature.imageAlt}
+                class="aspect-[4/3] w-full rounded-xl object-cover shadow-lg"
+                width="600"
+                height="450"
+                loading="lazy"
+              />
+            </div>
+
+            <!-- Text Column -->
+            <div>
+              <h3 class="font-heading text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+                {feature.title}
+              </h3>
+              <p class="mt-6 text-lg leading-8 text-neutral-600">
+                {feature.description}
+              </p>
+              {feature.cta && (
+                <div class="mt-8">
+                  <Button href={feature.cta.href} variant="primary">
+                    {feature.cta.text}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+</content>

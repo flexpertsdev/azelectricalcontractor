@@ -1,0 +1,86 @@
+<path>src/components/widgets/TrustBar.astro</path>
+<content>
+---
+import IconShieldCheck from '@components/icons/IconShieldCheck.astro';
+import IconFileDollar from '@components/icons/IconFileDollar.astro';
+import IconStar from '@components/icons/IconStar.astro';
+
+/**
+ * A prominent, scannable bar designed to build immediate trust with users.
+ * It showcases key value propositions or guarantees with corresponding icons.
+ * This component is typically placed directly below the hero section.
+ *
+ * @example
+ * ---
+ * import TrustBar from '@components/widgets/TrustBar.astro';
+ * const trustItems = [
+ *   { icon: 'shield-check', title: 'Certified Technicians', description: 'Licensed, insured, and highly trained.' },
+ *   { icon: 'file-dollar', title: 'Upfront Pricing', description: 'Clear quotes with no hidden fees.' },
+ *   { icon: 'star', title: 'Satisfaction Guaranteed', description: 'We don\'t leave until you\'re 100% satisfied.' }
+ * ];
+ * ---
+ * <TrustBar items={trustItems} />
+ */
+
+export type IconName = 'shield-check' | 'file-dollar' | 'star';
+
+export interface TrustBarItem {
+  /** The name of the icon to display. Must match a key in the iconComponents map. */
+  icon: IconName;
+  /** The main headline for the trust point (e.g., "Upfront Pricing"). */
+  title: string;
+  /** A brief description elaborating on the title. */
+  description: string;
+}
+
+export interface Props {
+  /** An array of trust items to display in the bar. Recommended 3 items for optimal layout. */
+  items: TrustBarItem[];
+  /** Additional CSS classes to apply to the outer container. */
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+
+// Maps the string prop `icon` to the actual Astro component for dynamic rendering.
+const iconComponents: Record<IconName, any> = {
+  'shield-check': IconShieldCheck,
+  'file-dollar': IconFileDollar,
+  'star': IconStar,
+};
+---
+
+<div
+  class:list={[
+    'rounded-xl border border-neutral-200/60 bg-neutral-50/80 shadow-lg backdrop-blur-md',
+    className,
+  ]}
+>
+  <div
+    class="grid grid-cols-1 divide-y divide-neutral-200/80 md:grid-cols-3 md:divide-x md:divide-y-0"
+  >
+    {
+      items.map((item) => {
+        const IconComponent = iconComponents[item.icon];
+        return (
+          <div class="flex items-start gap-4 p-6 lg:p-8">
+            <div class="flex-shrink-0">
+              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                {IconComponent && (
+                  <IconComponent class="h-6 w-6 text-primary" aria-hidden="true" />
+                )}
+              </div>
+            </div>
+            <div>
+              <h3 class="text-base font-semibold text-neutral-800 lg:text-lg">
+                {item.title}
+              </h3>
+              <p class="mt-1 text-sm text-neutral-600">{item.description}</p>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>
+</content>
